@@ -1,0 +1,6 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+httpx>=0.27
+# Optional (better text sentiment): pip install transformers torch
+# then run with COGNILEARN_USE_TRANSFORMERS=1
