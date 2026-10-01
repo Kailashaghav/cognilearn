@@ -6,13 +6,19 @@ from pydantic import BaseModel, Field
 
 from . import perception
 
-app = FastAPI(title="CogniLearn API", version="0.2.0")
+app = FastAPI(title="CogniLearn API", version="0.2.1")
 
-# Comma-separated list, e.g. "https://cognilearn.vercel.app"
+# Exact origins (comma-separated), e.g. "https://cognilearn.vercel.app"
 _extra = [o.strip().rstrip("/") for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()]
+
+# Matches the production URL and every Vercel preview/deployment URL of this project,
+# e.g. https://cognilearn-7vi9itxcc-kailashaghavs-projects.vercel.app
+_origin_regex = os.getenv("ALLOWED_ORIGIN_REGEX", r"https://cognilearn[a-z0-9-]*\.vercel\.app")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", *_extra],
+    allow_origin_regex=_origin_regex,
     allow_methods=["*"],
     allow_headers=["*"],
 )
